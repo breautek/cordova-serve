@@ -28,6 +28,12 @@ module.exports = function () {
 function CordovaServe () {
     this.app = express();
 
+    // To allow third-party tooling to request files from the cordova server
+    this.app.use((req, res, next) => {
+        req.set('Access-Control-Allow-Origin', '*');
+        next();
+    });
+
     // Attach this before anything else to provide status output
     this.app.use((req, res, next) => {
         res.on('finish', function () {
